@@ -397,6 +397,8 @@ func (r VaultService) get(rn *watchedResource) error {
 		fallthrough
 	case "mysql":
 		fallthrough
+	case "rabbitmq":
+		fallthrough
 	case "postgres":
 		fallthrough
 	case "secret":
@@ -465,6 +467,8 @@ func newVaultClient(opts *config) (*api.Client, error) {
 		token, err = NewUserPassPlugin(client).Create(opts.vaultAuthOptions)
 	case "approle":
 		token, err = NewAppRolePlugin(client).Create(opts.vaultAuthOptions)
+	case "kubernetes":
+		token, err = NewKubernetesPlugin(client).Create(opts.vaultAuthOptions)
 	case "token":
 		opts.vaultAuthOptions.FileName = options.vaultAuthFile
 		opts.vaultAuthOptions.FileFormat = options.vaultAuthFileFormat
